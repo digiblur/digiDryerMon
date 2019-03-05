@@ -21,7 +21,31 @@ ESP8266 based washer/dryer current monitoring via a split core current transform
 
 ### Sample Home Assistant Automation
 
+```YAML
+sensor:
+  - platform: mqtt
+    name: "Dryer Current"
+    state_topic: "digiDryerMon-4A443E/SCT"
+    unit_of_measurement : "A"
+    icon: mdi:flash-circle
+    availability_topic: "digiDryerMon-4A443E/LWT"
+    payload_available: "Online"
+    payload_not_available: "Offline"
 
+  - platform: mqtt
+    name: "DryerMon Signal"
+    state_topic: "digiDryerMon-4A443E/RSSI"
+    unit_of_measurement: "dBm"
+    availability_topic: "digiDryerMon-4A443E/LWT"
+    payload_available: "Online"
+    payload_not_available: "Offline"   
 
+  - platform: mqtt
+    name: "DryerMon Status"
+    state_topic: "digiDryerMon-4A443E/BUILD"
+    availability_topic: "digiDryerMon-4A443E/LWT"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+```
 
 
