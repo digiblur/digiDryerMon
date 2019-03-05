@@ -17,9 +17,7 @@ ESP8266 based washer/dryer current monitoring via a split core current transform
 [Alternative NodeMCU 8266](https://amzn.to/2Eo3Ahu)  
 [Alternative NodeMCU 8285](https://amzn.to/2TdNMIo)
 
-### Sample Home Assistant Config
-
-### Sample Home Assistant Automation
+### Sample Home Assistant Config 
 
 ```YAML
 sensor:
@@ -48,4 +46,6 @@ sensor:
     payload_not_available: "Offline"
 ```
 
+### Sample Home Assistant Automation
+https://www.digiblur.com/2018/11/smart-laundry-notifications-with-sonoff.html
 
