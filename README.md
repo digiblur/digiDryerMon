@@ -6,7 +6,7 @@ Video Demostration and Setup - https://www.youtube.com/watch?v=1tqJkw5f0iA
 ### Parts List
 [Split Core Current Transformer](https://amzn.to/2XDcnoX)  
 [Wemos D1 Mini](https://amzn.to/2SHvFpk)  
-[10µF Capacitor](https://amzn.to/2Xzq5ck)  
+[10µF Capacitor](https://amzn.to/2VFhGC6)  
 [10k Resistors](https://amzn.to/2ErWhWi)  
 [Preformed Jumpers](https://amzn.to/2Ha3bCs)  
 [Breadboard](https://amzn.to/2HbdINP)  
