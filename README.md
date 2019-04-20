@@ -3,6 +3,8 @@ ESP8266 based washer/dryer current monitoring via a split core current transform
 
 Video Demostration and Setup - https://www.youtube.com/watch?v=1tqJkw5f0iA
 
+UPDATE: If you don't want to use the custom Arduino sketch you can use the included files in the ESPHome folder.  You will need to modify the file to fit your network configuration.  Thanks to LuckyStyle for putting this together.  I have found the ESP8266 struggles to keep up with the API connection during each sensor poll and disconnects from the API so I used MQTT for this.
+
 ### Parts List
 [Split Core Current Transformer](https://amzn.to/2XDcnoX)  
 [Wemos D1 Mini](https://amzn.to/2SHvFpk)  
