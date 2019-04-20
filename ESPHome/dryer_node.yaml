@@ -1,0 +1,96 @@
+esphome:
+  name: dryer_node
+  platform: ESP8266
+  board: d1_mini
+  includes:
+    - currentsensor.h
+  libraries:
+    - "EmonLib"
+
+wifi:
+  ssid: "Your SSID"  change me and remove this message to make the error go away!
+  password: "Your Password" change me and remove this message to make the error go away!
+#  manual_ip:  # if you need manual IP config
+#    static_ip: 10.10.1.46
+#    gateway: 10.10.1.1
+#    subnet: 255.255.255.0
+#    dns1: 10.10.1.1
+#    dns2: 10.10.1.1
+
+# Enable logging
+logger:
+
+#mqtt:
+#  broker: !secret mqtt_broker
+#  username: !secret mqtt_user
+#  password: !secret mqtt_pass
+
+# Enable Home Assistant API
+api:
+
+#web_server:
+
+ota:
+
+sensor:
+  - platform: custom
+    lambda: |-
+      auto current_sensor = new CurrentSensor(
+          A0,                /* Current Pin */
+          2,                 /* Led Pin - 2 (D4) Wemos Mini D1 and NodeMCU */
+          LOW,               /* LEDon  */
+          HIGH,              /* LEDoff */
+          15000,             /* emonCalcIrms - current calibration settings */
+          30,                /* emonCurrent - current calibration settings */
+          10000              /* Update Interval - 10 seconds or more is recommended*/
+        );
+      App.register_component(current_sensor);
+      return {current_sensor};
+
+    sensors:
+      name: "Dryer Current"
+      unit_of_measurement: "A"
+      accuracy_decimals: 2
+      icon: "mdi:flash-circle"
+      id: dryer_current
+      on_value:
+        then:
+          - sensor.template.publish:
+              id: dryer_code
+              state: !lambda 'if (x > 50) { return 2; } else if ( x > 1 ) { return 1; } else { return 0; }' # codes: 0 Idle, 1 Door Open, 2 Drying
+#              state: !lambda 'if (x > 1) { return 2; } else { return 0; }' # Without door detection
+
+  - platform: wifi_signal
+    name: "DryerMon Signal"
+    update_interval: 5min
+    on_value:
+      then:
+        - text_sensor.template.publish:
+            id: dryermon_status
+            state: !lambda 'return std::string("LS-digiDryerMon - Build: ")  + __DATE__ + " " +  __TIME__ + " - " + id(ip_address).state;'
+
+  - platform: template
+    id: dryer_code
+    internal: true
+    filters:
+      - debounce: 5s
+    on_value:
+      then:
+        - text_sensor.template.publish:
+            id: dryer
+            state: !lambda 'if (x == 2) { return "Drying"; } else if (x == 1) { return "Door Open";} else { return "Idle"; }'        
+
+text_sensor:
+  - platform: template
+    name: "Dryer"
+    id: dryer
+    icon: "mdi:tumble-dryer"
+  - platform: wifi_info
+    ip_address:
+      id: ip_address
+      internal: true
+  - platform: template
+    name: "DryerMon Status"
+    id: dryermon_status
+
+
