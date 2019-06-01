@@ -41,27 +41,12 @@ class CurrentSensor : public PollingComponent, public sensor::Sensor {
     // This will be called by App.setup()
   }
   void update() override {
-    char sSCTcurTemp[5]; 
     float sctDiff = 0.1;  // difference in current to trigger a publish
-
     ESP_LOGD("SCT:", "Read");
     digitalWrite(this->intLED1Pin, this->LEDon);
     float sctNewCur = emon1.calcIrms(this->emonCalcIrms);
     digitalWrite(this->intLED1Pin, this->LEDoff);  
-    dtostrf(sctNewCur, 2, 2, sSCTcurTemp);
-    ESP_LOGD("SCT", "Results - Current: %s", String(sSCTcurTemp).c_str());
-    // check curr difference - update the status?
-    if (checkBoundSensor(sctNewCur, sctCur, sctDiff)) {
-        sctCur = sctNewCur;
-        ESP_LOGD("SCT", "Publish new value");
-        digitalWrite(this->intLED1Pin, this->LEDon);
-        publish_state(sctCur);
-        digitalWrite(this->intLED1Pin, this->LEDoff);     
-    }
-    
+    ESP_LOGD("SCT", "Results - Current: %.2f", sctNewCur);
+    publish_state(sctNewCur);
   }
-  // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= //
-    bool checkBoundSensor(float newValue, float prevValue, float maxDiff) {
-        return newValue < prevValue - maxDiff || newValue > prevValue + maxDiff;
-    }
 };
