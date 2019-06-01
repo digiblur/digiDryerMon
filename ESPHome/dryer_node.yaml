@@ -53,12 +53,17 @@ sensor:
       accuracy_decimals: 2
       icon: "mdi:flash-circle"
       id: dryer_current
+      filters:
+        - delta: 0.1
       on_value:
         then:
           - sensor.template.publish:
               id: dryer_code
-              state: !lambda 'if (x > 50) { return 2; } else if ( x > 1 ) { return 1; } else { return 0; }' # codes: 0 Idle, 1 Door Open, 2 Drying
-#              state: !lambda 'if (x > 1) { return 2; } else { return 0; }' # Without door detection
+              # codes: 0 Idle, 1 Door Open, 2 Drying
+              state: !lambda |-
+                if (x > 50) return 2; 
+                if (x > 1) return 1;
+                return 0;
 
   - platform: wifi_signal
     name: "DryerMon Signal"
@@ -78,7 +83,10 @@ sensor:
       then:
         - text_sensor.template.publish:
             id: dryer
-            state: !lambda 'if (x == 2) { return "Drying"; } else if (x == 1) { return "Door Open";} else { return "Idle"; }'        
+            state: !lambda |-
+              if (x == 2) return "Drying";
+              if (x == 1) return "Door Open";
+              return "Idle";
 
 text_sensor:
   - platform: template
