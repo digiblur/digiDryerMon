@@ -1,0 +1,79 @@
+esphome:
+  name: dryer_current
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pass
+  manual_ip:
+    static_ip: !secret ip_dryermon
+    gateway: !secret ip_gateway
+    subnet: !secret ip_subnet
+    dns1: !secret ip_dns1
+
+# Enable logging
+logger:
+
+# Comment out and/or remove MQTT if you want to use the ESPHome API
+
+mqtt:
+  broker: !secret mqtt_broker
+  username: !secret mqtt_user
+  password: !secret mqtt_pass
+
+# Uncomment if you want to use the ESPHome API
+#api:
+
+ota:
+
+web_server:
+
+sensor:
+  - platform: ct_clamp
+    sensor: adc_sensor
+    name: "Dryer Current"
+    unit_of_measurement: "A"
+    icon: "mdi:flash-circle"
+    id: dryer_current
+    update_interval: 20s
+    filters:
+      - calibrate_linear:
+          - 0.0 -> 0.0
+          - 0.058 -> 7.00
+    on_value:
+      then:
+        - sensor.template.publish:
+            id: dryer_code
+            # codes: 0 Idle, 1 Door Open, 2 Drying
+            state: !lambda |-
+              if (x > 5) return 2; 
+              return 0;
+
+#              if (x > 1) return 1;
+
+  - platform: template
+    id: dryer_code
+    internal: true
+#    filters:
+#      - debounce: 2s
+    on_value:
+      then:
+        - text_sensor.template.publish:
+            id: dryer
+            state: !lambda |-
+              if (x == 2) return "Drying";
+              return "Idle";
+
+#              if (x == 1) return "Door Open";
+
+              
+  - platform: adc
+    pin: A0
+    id: adc_sensor
+
+text_sensor:
+  - platform: template
+    name: "Dryer"
+    id: dryer
+    icon: "mdi:tumble-dryer"
