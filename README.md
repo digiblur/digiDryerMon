@@ -3,8 +3,6 @@ ESP8266 based washer/dryer current monitoring via a split core current transform
 
 Video Demostration and Setup - https://www.youtube.com/watch?v=1tqJkw5f0iA
 
-UPDATE: If you don't want to use the custom Arduino sketch you can use the included files in the ESPHome folder.  You will need to modify the file to fit your network configuration.  Thanks to LuckyStyle for putting this together.  I have found the ESP8266 struggles to keep up with the API connection during each sensor poll and disconnects from the API so I used MQTT for this.
-
 ### Parts List
 [Split Core Current Transformer](https://amzn.to/2XDcnoX)  
 [Wemos D1 Mini](https://amzn.to/2Z44jNS)  
@@ -26,6 +24,7 @@ https://www.digiblur.com/2018/11/smart-laundry-notifications-with-sonoff.html
 ![alt text](https://raw.githubusercontent.com/digiblur/digiDryerMon/master/jpgs/digiDryerMonLayout2.jpg "Wiring Diagram2")
 ![alt text](https://raw.githubusercontent.com/digiblur/digiDryerMon/master/jpgs/sct-013-030-30a.jpg "SCT 30A/1V")
 
+The original Arduino IDE version sketch and ESPHome Custom Component versions have been moved to subfolders for historic purposes.
 
 ### Sample Home Assistant Config (Deprecated Arduino IDE Sketch Config)
 
