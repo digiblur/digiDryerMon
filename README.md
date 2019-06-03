@@ -1,5 +1,5 @@
 # digiDryerMon
-ESP8266 based washer/dryer current monitoring via a split core current transformer over MQTT.  Pull Requests are welcome!  Please open an issue if you have any support needs.
+ESP8266 based washer/dryer current monitoring via a split core current transformer with ESPHome.  Pull Requests are welcome!  Please open an issue if you have any support needs.
 
 Video Demostration and Setup - https://www.youtube.com/watch?v=1tqJkw5f0iA
 
