@@ -34,7 +34,7 @@ sensor:
     sensor: adc_sensor
     name: "Dryer Current"
     unit_of_measurement: "A"
-    icon: "mdi:flash-circle"
+    icon: "mdi:lightning-bolt-circle"
     id: dryer_current
     update_interval: 20s
     filters:
